@@ -10,6 +10,12 @@ def diff():
         print("Файл не найден")
 
     diff = ImageChops.difference(image_one, image_two)
+    # print(diff)
+    # скорее всего difference возвращает количество различных пикселей
+
+    #  если отличия найдены, выведем их в отдельном окне на экран
+    if diff.getbbox():
+        diff.show()
 
     if diff.getbbox():
         print("images are different")
