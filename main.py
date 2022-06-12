@@ -4,7 +4,6 @@ import cv2
 
 
 def diff():
-
     img_1 = "image_1.jpg"
     img_2 = "image_2.jpg"
     # открываем изображения
@@ -14,7 +13,8 @@ def diff():
     except FileNotFoundError:
         print("Файл не найден")
 
-    # конвертация в grayscale
+    # конвертация в grayscale чтобы уменьшить шумы которые возникают при конвертации .
+    # в 16 на 16 поэтому снчала конвертируем в 16 потом в серый
     img_gray_1 = cv2.imread(img_1, 0)
     img_gray_2 = cv2.imread(img_2, 0)
 
