@@ -1,9 +1,5 @@
-from PIL import Image  # основной модуль
-from PIL import ImageChops
-
-from numpy import asarray
-
 import cv2
+from numpy import asarray
 
 
 def diff():
@@ -16,53 +12,43 @@ def diff():
     except FileNotFoundError:
         print("Файл не найден")
 
-    # конвертация в grayscale чтобы уменьшить шумы которые возникают при конвертации .
-    # в 16 на 16 поэтому снчала конвертируем в 16 потом в серый
-    # (Если вы не добавляете предварительную обработку, изображения должны иметь одинаковые размеры
+    # конвертация в grayscale, чтобы вместо 3-х значений пикселя получить 1 и сравнивать только яркость пикселей, а не цвет
     img_gray_1 = cv2.imread(img_1, 0)
     img_gray_2 = cv2.imread(img_2, 0)
 
     dimension = (16, 16)
-    amount_pixels = dimension[0] * dimension[1]
-    print(f"размер изображения: {amount_pixels} пикселей")
+    amount_pix = dimension[0] * dimension[1]
 
-    # преобразование изображения в нужный размер  (столбец, строка)   print(len(numpydata_2)) дает количетсво строк
-    res_img_1 = cv2.resize(img_gray_1, dimension, cv2.INTER_NEAREST)
-    res_img_2 = cv2.resize(img_gray_2, dimension, cv2.INTER_NEAREST)
+    # преобразование изображений в одинаковый требуемый размер
+    res_img_1 = cv2.resize(img_gray_1, dimension, cv2.INTER_AREA)
+    res_img_2 = cv2.resize(img_gray_2, dimension, cv2.INTER_AREA)
 
-    # считывание пикселей в массив
-    numpydata_1 = asarray(res_img_1)
-    numpydata_2 = asarray(res_img_2)
-    print(numpydata_1, '\n')
-    print(numpydata_2)
+    # чтение пикселей в массив
+    arr_pix_1 = asarray(res_img_1)
+    arr_pix_2 = asarray(res_img_2)
 
-    threshold = int(input('введите пороговое значение [0;255]\n'))
+    threshold = float(input('Введите пороговое значение на отрезке [0;255]\n'))
+    flag = False
+    while not flag:
+        if 0 <= threshold and threshold <= 255:
+            flag = True
+        else:
+            threshold = float(input('Значение неверно. Пожалуйста, введите еще раз\n'))
+
     count_dif_pix = 0
-
-    for i in range(len(numpydata_1)):
-        for j in range(len(numpydata_1)):
-            # т к пиксели хранятся в uint8 от 0 до 255, то возникает исключение, поэтому приведем к int
-            if abs(int(numpydata_1[i][j]) - int(numpydata_2[i][j])) > threshold:
+    for i in range(len(arr_pix_1)):
+        for j in range(len(arr_pix_1)):
+            # т к пиксели хранятся в uint8 от 0 до 255, то при взятии разности возникает исключение, поэтому приведем к int
+            if abs(int(arr_pix_1[i][j]) - int(arr_pix_2[i][j])) > threshold:
                 count_dif_pix += 1
-    print(f"количество различных пикселей {count_dif_pix}")
-    print(f"размер изображения: {amount_pixels} пикселей")
 
-    per_dif = (count_dif_pix / amount_pixels) * 100
+    per_dif = (count_dif_pix / amount_pix) * 100
 
-    if round(per_dif) == 0:
+    if per_dif == 0:
         print("изображения одинаковые")
     else:
-        print(f"изображения различаются на {round(per_dif)} % ")
-
-    #
-    # # To display Image
-    # window_name = 'Grayscale Conversion OpenCV'
-    # cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
-    # cv2.imshow(window_name, res_img_1)  # вывожу только одно изображение
-    # cv2.waitKey(0)
-    # cv2.destroyAllWindows()
+        print("изображения различаются на %.2f" % per_dif, "%")
 
 
 if __name__ == '__main__':
     diff()
-    # original.show()  показать изображение
