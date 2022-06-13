@@ -31,7 +31,7 @@ def compare_images():
     threshold = float(input('Введите пороговое значение на отрезке [0;255]\n'))
     flag = False
     while not flag:
-        if 0 <= threshold and threshold <= 255:
+        if 0 <= threshold <= 255:
             flag = True
         else:
             threshold = float(input('Значение неверно. Пожалуйста, введите еще раз\n'))
