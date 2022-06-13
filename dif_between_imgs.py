@@ -4,8 +4,8 @@ from numpy import asarray
 
 def compare_images():
     """сравнивает изображения и выдает разницу в процентах"""
-    img_1 = "Screenshot_1.jpg"
-    img_2 = "Screenshot_2.jpg"
+    img_1 = "test_2_1.png"
+    img_2 = "test_2_2.png"
     # открываем изображения
     try:
         image_one = cv2.imread(img_1)
@@ -28,13 +28,17 @@ def compare_images():
     arr_pix_1 = asarray(res_img_1)
     arr_pix_2 = asarray(res_img_2)
 
-    threshold = float(input('Введите пороговое значение на отрезке [0;255]\n'))
-    flag = False
-    while not flag:
-        if 0 <= threshold and threshold <= 255:
-            flag = True
-        else:
-            threshold = float(input('Значение неверно. Пожалуйста, введите еще раз\n'))
+    while True:
+        try:
+            threshold = input('Введите пороговое значение на отрезке [0;255]\n')
+            if not threshold.isnumeric():
+                raise ValueError
+            elif not 0 <= float(threshold) <= 255:
+                raise ValueError
+            else:
+                break
+        except ValueError:
+            print("Значение некорректно. Попробуйте снова")
 
     count_dif_pix = 0
     for i in range(len(arr_pix_1)):
