@@ -1,11 +1,15 @@
 import cv2
 from numpy import asarray
+from service import my_input
 
 
 def compare_images():
     """сравнивает изображения и выдает разницу в процентах"""
-    img_1 = "test_1_1.jpg"
-    img_2 = "test_1_2.jpg"
+
+    path = "./tests/test_1/test_1_input/"
+    img_1 = path + "test_1_1.jpg"
+    img_2 = path + "test_1_2.jpg"
+
     # открываем изображения
     try:
         image_one = cv2.imread(img_1)
@@ -28,23 +32,11 @@ def compare_images():
     arr_pix_1 = asarray(res_img_1)
     arr_pix_2 = asarray(res_img_2)
 
-    while True:
-    try:
-        threshold = input('Введите пороговое значение на отрезке [0;255]\n')
-        if not threshold.isnumeric():
-            raise ValueError
-        elif not 0 <= float(threshold) <= 255:
-            raise ValueError
-        else:
-            break
-    except ValueError:
-        print("Значение некорректно. Попробуйте снова")
-
+    threshold = my_input()
 
     count_dif_pix = 0
     for i in range(len(arr_pix_1)):
         for j in range(len(arr_pix_1)):
-            # т к пиксели хранятся в uint8 от 0 до 255, то при взятии разности возникает исключение, поэтому приведем к int
             if abs(int(arr_pix_1[i][j]) - int(arr_pix_2[i][j])) > threshold:
                 count_dif_pix += 1
 
