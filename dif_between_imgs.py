@@ -22,7 +22,6 @@ def compare_images():
     img_gray_2 = cv2.imread(img_2, 0)
 
     dimension = (16, 16)
-    amount_pix = dimension[0] * dimension[1]
 
     # преобразование изображений в одинаковый требуемый размер
     res_img_1 = cv2.resize(img_gray_1, dimension, cv2.INTER_AREA)
@@ -39,7 +38,8 @@ def compare_images():
         for j in range(len(arr_pix_1)):
             if abs(int(arr_pix_1[i][j]) - int(arr_pix_2[i][j])) > threshold:
                 count_dif_pix += 1
-
+    
+    amount_pix = dimension[0] * dimension[1]
     per_dif = (count_dif_pix / amount_pix) * 100
 
     if per_dif == 0:
