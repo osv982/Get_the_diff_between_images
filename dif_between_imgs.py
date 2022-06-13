@@ -4,8 +4,8 @@ from numpy import asarray
 
 def compare_images():
     """сравнивает изображения и выдает разницу в процентах"""
-    img_1 = "Screenshot_1.jpg"
-    img_2 = "Screenshot_2.jpg"
+    img_1 = "test_1_1.jpg"
+    img_2 = "test_1_2.jpg"
     # открываем изображения
     try:
         image_one = cv2.imread(img_1)
