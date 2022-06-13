@@ -32,7 +32,7 @@ def compare_images():
     arr_pix_1 = asarray(res_img_1)
     arr_pix_2 = asarray(res_img_2)
 
-    threshold = my_input()
+    threshold = my_input('Введите пороговое значение на отрезке [0;255]\n',"Неверный тип. Попробуйте снова","Значение некорректно. Попробуйте снова")
 
     count_dif_pix = 0
     for i in range(len(arr_pix_1)):
