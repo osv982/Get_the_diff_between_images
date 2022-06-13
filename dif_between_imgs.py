@@ -28,13 +28,18 @@ def compare_images():
     arr_pix_1 = asarray(res_img_1)
     arr_pix_2 = asarray(res_img_2)
 
-    threshold = float(input('Введите пороговое значение на отрезке [0;255]\n'))
-    flag = False
-    while not flag:
-        if 0 <= threshold <= 255:
-            flag = True
+    while True:
+    try:
+        threshold = input('Введите пороговое значение на отрезке [0;255]\n')
+        if not threshold.isnumeric():
+            raise ValueError
+        elif not 0 <= float(threshold) <= 255:
+            raise ValueError
         else:
-            threshold = float(input('Значение неверно. Пожалуйста, введите еще раз\n'))
+            break
+    except ValueError:
+        print("Значение некорректно. Попробуйте снова")
+
 
     count_dif_pix = 0
     for i in range(len(arr_pix_1)):
